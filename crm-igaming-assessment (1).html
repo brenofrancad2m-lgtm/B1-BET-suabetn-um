@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM iGaming Assessment — B1 BET | Breno Souto de França</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0c0c0c;
+    --bg-secondary: #111111;
+    --bg-card: #161616;
+    --bg-card-hover: #1c1c1c;
+    --border: #222222;
+    --border-accent: #333333;
+    --text-primary: #f0f0f0;
+    --text-secondary: #999999;
+    --text-muted: #5a5a5a;
+    --orange: #f57c00;
+    --orange-bright: #ff9800;
+    --orange-dim: rgba(245,124,0,0.08);
+    --orange-glow: rgba(245,124,0,0.2);
+    --orange-border: rgba(245,124,0,0.15);
+    --green: #4caf50;
+    --green-dim: rgba(76,175,80,0.08);
+    --green-border: rgba(76,175,80,0.15);
+    --blue: #42a5f5;
+    --blue-dim: rgba(66,165,245,0.08);
+    --blue-border: rgba(66,165,245,0.15);
+    --red: #ef5350;
+    --red-dim: rgba(239,83,80,0.08);
+    --red-border: rgba(239,83,80,0.15);
+    --purple: #ab47bc;
+    --purple-dim: rgba(171,71,188,0.08);
+    --purple-border: rgba(171,71,188,0.15);
+    --amber: #ffb300;
+    --amber-dim: rgba(255,179,0,0.08);
+    --amber-border: rgba(255,179,0,0.15);
+    --white: #ffffff;
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── Noise Texture ── */
+  .noise {
+    position: fixed; inset:0; z-index:0; pointer-events:none; opacity:0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+  }
+
+  /* ── Top Orange Accent Line ── */
+  .top-accent {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--orange), var(--orange-bright), var(--orange), transparent);
+    z-index: 100;
+  }
+
+  .wrapper {
+    position: relative; z-index:1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* HEADER                                  */
+  /* ═══════════════════════════════════════ */
+  header {
+    text-align: center;
+    margin-bottom: 64px;
+    padding-top: 24px;
+  }
+
+  .logo-container {
+    margin-bottom: 28px;
+  }
+
+  .logo-container img {
+    height: 52px;
+    object-fit: contain;
+  }
+
+  /* Fallback text logo if image fails */
+  .logo-text {
+    display: none;
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+  .logo-text span:first-child { color: var(--white); }
+  .logo-text span:nth-child(2) { color: var(--orange); }
+  .logo-text span:last-child { color: var(--white); }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: var(--orange-dim);
+    border: 1px solid var(--orange-border);
+    padding: 7px 18px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .header-badge svg {
+    width: 14px; height: 14px;
+    fill: none;
+    stroke: var(--orange);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  header h1 {
+    font-size: clamp(30px, 4.5vw, 44px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 14px;
+    color: var(--white);
+  }
+
+  header h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--orange), var(--orange-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header-subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto 20px;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .header-meta .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .header-meta svg {
+    width: 14px; height: 14px;
+    fill: none;
+    stroke: var(--text-muted);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .slogan-bar {
+    margin-top: 24px;
+    padding: 12px 20px;
+    background: var(--orange-dim);
+    border: 1px solid var(--orange-border);
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--orange-bright);
+    font-weight: 500;
+  }
+
+  .slogan-bar svg {
+    width: 16px; height: 16px;
+    fill: none;
+    stroke: var(--orange);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* SECTIONS                                */
+  /* ═══════════════════════════════════════ */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    margin-top: 56px;
+  }
+
+  .section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px; height: 42px;
+    border-radius: 11px;
+    flex-shrink: 0;
+  }
+
+  .section-icon svg {
+    width: 20px; height: 20px;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .section-icon.orange { background: var(--orange-dim); border: 1px solid var(--orange-border); }
+  .section-icon.orange svg { stroke: var(--orange); }
+  .section-icon.green { background: var(--green-dim); border: 1px solid var(--green-border); }
+  .section-icon.green svg { stroke: var(--green); }
+  .section-icon.blue { background: var(--blue-dim); border: 1px solid var(--blue-border); }
+  .section-icon.blue svg { stroke: var(--blue); }
+  .section-icon.purple { background: var(--purple-dim); border: 1px solid var(--purple-border); }
+  .section-icon.purple svg { stroke: var(--purple); }
+  .section-icon.amber { background: var(--amber-dim); border: 1px solid var(--amber-border); }
+  .section-icon.amber svg { stroke: var(--amber); }
+  .section-icon.red { background: var(--red-dim); border: 1px solid var(--red-border); }
+  .section-icon.red svg { stroke: var(--red); }
+
+  .section-header h2 {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .section-header .section-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 500;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* CARDS                                   */
+  /* ═══════════════════════════════════════ */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px;
+    margin-bottom: 14px;
+    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+  }
+
+  .card:hover {
+    border-color: var(--border-accent);
+    background: var(--bg-card-hover);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    letter-spacing: -0.2px;
+    color: var(--text-primary);
+  }
+
+  .card-title svg {
+    width: 18px; height: 18px;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* GRIDS                                   */
+  /* ═══════════════════════════════════════ */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* LISTS                                   */
+  /* ═══════════════════════════════════════ */
+  .item-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .item-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--text-primary);
+    line-height: 1.55;
+  }
+
+  .item-list li .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .dot.orange { background: var(--orange); box-shadow: 0 0 8px var(--orange-glow); }
+  .dot.green { background: var(--green); }
+  .dot.blue { background: var(--blue); }
+  .dot.red { background: var(--red); }
+  .dot.amber { background: var(--amber); }
+  .dot.purple { background: var(--purple); }
+
+  /* ═══════════════════════════════════════ */
+  /* TAGS                                    */
+  /* ═══════════════════════════════════════ */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 5px;
+    letter-spacing: 0.3px;
+    vertical-align: middle;
+  }
+
+  .tag.orange { background: var(--orange-dim); color: var(--orange); border: 1px solid var(--orange-border); }
+  .tag.green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+  .tag.blue { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+  .tag.red { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-border); }
+  .tag.amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber-border); }
+  .tag.purple { background: var(--purple-dim); color: var(--purple); border: 1px solid var(--purple-border); }
+
+  /* ═══════════════════════════════════════ */
+  /* STAT CARDS                              */
+  /* ═══════════════════════════════════════ */
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+
+  .stat-card:hover { border-color: var(--border-accent); }
+
+  .stat-card .stat-icon {
+    margin-bottom: 8px;
+  }
+
+  .stat-card .stat-icon svg {
+    width: 22px; height: 22px;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .stat-card .stat-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .stat-card .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.5px;
+  }
+
+  .stat-card .stat-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* RETENTION BANNER                        */
+  /* ═══════════════════════════════════════ */
+  .retention-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: linear-gradient(135deg, rgba(239,83,80,0.06), rgba(239,83,80,0.02));
+    border: 1px solid var(--red-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .retention-banner .big-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: -3px;
+    line-height: 1;
+  }
+
+  .retention-banner .big-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    text-align: left;
+  }
+
+  .retention-banner .big-label strong {
+    color: var(--text-primary);
+    display: block;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* PLAYER PROFILES                         */
+  /* ═══════════════════════════════════════ */
+  .profile-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .profile-card:hover {
+    border-color: var(--border-accent);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  }
+
+  .profile-header {
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .profile-avatar {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-avatar svg {
+    width: 20px; height: 20px;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .profile-name { font-size: 14px; font-weight: 600; }
+  .profile-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .profile-body { padding: 18px 24px 24px; }
+
+  .profile-body .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    margin-top: 16px;
+    font-weight: 500;
+  }
+
+  .profile-body .label:first-child { margin-top: 0; }
+
+  /* ═══════════════════════════════════════ */
+  /* GLOSSARY                                */
+  /* ═══════════════════════════════════════ */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .glossary-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    transition: border-color 0.3s;
+  }
+
+  .glossary-item:hover { border-color: var(--border-accent); }
+
+  .glossary-term {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .glossary-def {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* DIVIDER                                 */
+  /* ═══════════════════════════════════════ */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 52px 0;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* FOOTER                                  */
+  /* ═══════════════════════════════════════ */
+  footer {
+    text-align: center;
+    padding: 48px 0 0;
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  footer .footer-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  footer svg {
+    width: 12px; height: 12px;
+    fill: none;
+    stroke: var(--text-muted);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ═══════════════════════════════════════ */
+  /* ANIMATIONS                              */
+  /* ═══════════════════════════════════════ */
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(18px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  .anim { opacity: 0; }
+  .anim.visible { animation: fadeUp 0.55s ease both; }
+  .d1 { animation-delay: 0.05s; }
+  .d2 { animation-delay: 0.1s; }
+  .d3 { animation-delay: 0.15s; }
+  .d4 { animation-delay: 0.2s; }
+  .d5 { animation-delay: 0.25s; }
+  .d6 { animation-delay: 0.3s; }
+
+  /* ═══════════════════════════════════════ */
+  /* RESPONSIVE                              */
+  /* ═══════════════════════════════════════ */
+  @media (max-width: 680px) {
+    .wrapper { padding: 32px 16px 60px; }
+    .card { padding: 20px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .retention-banner { flex-direction: column; gap: 10px; text-align: center; }
+    .retention-banner .big-label { text-align: center; }
+    header h1 { font-size: 26px; }
+    .header-meta { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div class="top-accent"></div>
+
+<div class="wrapper">
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- HEADER                                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <header class="anim">
+    <div class="logo-container">
+      <img src="/mnt/user-data/uploads/5254_500x250_dark.png" alt="B1 BET Logo" onerror="this.style.display='none';document.querySelector('.logo-text').style.display='inline-block';">
+      <div class="logo-text"><span>B</span><span>1</span><span>BET</span></div>
+    </div>
+
+    <div class="header-badge">
+      <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      CRM Assessment
+    </div>
+
+    <h1>Estratégia <em>CRM iGaming</em><br>Teste Técnico</h1>
+
+    <p class="header-subtitle">Retenção, segmentação comportamental e gamificação para operações de cassino online com foco em resultado e margem sustentável.</p>
+
+    <div class="header-meta">
+      <div class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Breno Souto de França</span>
+      </div>
+      <div class="meta-item">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>2025</span>
+      </div>
+      <div class="meta-item">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>B1 BET</span>
+      </div>
+    </div>
+
+    <div class="slogan-bar">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      A sua bet nº1! — Apostas esportivas · Cassino · Slots · Saque rápido
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- DESAFIO 1 — RETENÇÃO 30 DIAS                       -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-header anim d1">
+    <div class="section-icon orange">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <div>
+      <div class="section-label">Desafio 1</div>
+      <h2>Primeiros 30 Dias — Retenção</h2>
+    </div>
+  </div>
+
+  <!-- Retention Banner -->
+  <div class="retention-banner anim d2">
+    <div class="big-number">15%</div>
+    <div class="big-label">
+      <strong>Retenção atual</strong>
+      Métrica crítica nos primeiros 30 dias de jogo
+    </div>
+  </div>
+
+  <!-- Problemas Investigados -->
+  <div class="card anim d2">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" stroke="var(--red)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Problemas Investigados
+    </div>
+    <ul class="item-list">
+      <li><span class="dot red"></span>Ativação fraca — tempo elevado até a 2ª sessão do jogador.</li>
+      <li><span class="dot red"></span>Comunicação genérica e pouco segmentada, sem personalização real.</li>
+      <li><span class="dot red"></span>Incentivos desalinhados ao comportamento real do jogador.</li>
+    </ul>
+  </div>
+
+  <!-- Dados Mínimos + Objetivos -->
+  <div class="grid-2 anim d3">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" stroke="var(--blue)"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Dados Mínimos Necessários
+      </div>
+      <ul class="item-list">
+        <li><span class="dot blue"></span>Categoria de jogo preferida.</li>
+        <li><span class="dot blue"></span>Stake médio e frequência de aposta.</li>
+        <li><span class="dot blue"></span><span class="tag orange">GGR</span>&nbsp; <span class="tag blue">NGR</span>&nbsp; e margem por jogador.</span></li>
+        <li><span class="dot blue"></span>Dias ativos e data da última sessão.</li>
+        <li><span class="dot blue"></span>Depósitos, saques e churn <span class="tag red">D7</span> <span class="tag red">D14</span> <span class="tag red">D30</span>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" stroke="var(--green)"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+        Objetivos — 30 dias
+      </div>
+      <ul class="item-list">
+        <li><span class="dot green"></span>Reduzir churn <span class="tag red">D7</span> e <span class="tag red">D14</span>.</li>
+        <li><span class="dot green"></span>Aumentar retorno de jogadores recentes.</li>
+        <li><span class="dot green"></span>Implementar segmentação por valor e jogo principal.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Quick Wins -->
+  <div class="card anim d4">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24" stroke="var(--amber)"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Quick Wins
+    </div>
+    <div class="grid-2">
+      <ul class="item-list">
+        <li><span class="dot amber"></span>Fluxo automatizado pós-primeiro depósito.</li>
+        <li><span class="dot amber"></span>Campanhas separadas para Slots e Crash.</li>
+      </ul>
+      <ul class="item-list">
+        <li><span class="dot amber"></span>Winback <span class="tag red">D7</span> com incentivo controlado.</li>
+        <li><span class="dot amber"></span>Correção de prêmios irrelevantes por segmento.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Métricas de Sucesso -->
+  <div class="section-header anim d5" style="margin-top:28px;">
+    <div class="section-icon green">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    </div>
+    <div>
+      <div class="section-label">Acompanhamento</div>
+      <h2>Métricas de Sucesso</h2>
+    </div>
+  </div>
+
+  <div class="grid-4 anim d5">
+    <div class="stat-card">
+      <div class="stat-icon"><svg viewBox="0 0 24 24" stroke="var(--green)"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+      <div class="stat-label">Retenção</div>
+      <div class="stat-value" style="color:var(--green);">D7 / D14</div>
+      <div class="stat-desc">Taxa de retorno early-stage</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><svg viewBox="0 0 24 24" stroke="var(--blue)"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <div class="stat-label">Taxa de</div>
+      <div class="stat-value" style="color:var(--blue);">Retorno</div>
+      <div class="stat-desc">Jogadores reativados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><svg viewBox="0 0 24 24" stroke="var(--orange)"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+      <div class="stat-label">Incremental</div>
+      <div class="stat-value" style="color:var(--orange);">GGR / NGR</div>
+      <div class="stat-desc">Receita incremental gerada</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><svg viewBox="0 0 24 24" stroke="var(--purple)"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <div class="stat-label">Sessões</div>
+      <div class="stat-value" style="color:var(--purple);">/ Player</div>
+      <div class="stat-desc">Nº médio por jogador</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- DESAFIO 2 — GAMIFICAÇÃO ALTO VALOR                 -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-header anim">
+    <div class="section-icon purple">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </div>
+    <div>
+      <div class="section-label">Desafio 2</div>
+      <h2>Gamificação para Alto Valor</h2>
+    </div>
+  </div>
+
+  <!-- Nova Lógica + Controle de Margem -->
+  <div class="grid-2 anim d1">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" stroke="var(--purple)"><path d="M12 2a10 10 0 0110 10c0 5.52-4.48 10-10 10S2 17.52 2 12"/><path d="M12 6v6l4 2"/></svg>
+        Nova Lógica de Pontuação
+      </div>
+      <ul class="item-list">
+        <li><span class="dot purple"></span>Pontuação baseada em <span class="tag blue">NGR</span> ponderado.</li>
+        <li><span class="dot purple"></span>Regras distintas por categoria de jogo.</li>
+        <li><span class="dot purple"></span>Recompensas alinhadas ao jogo principal do jogador.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" stroke="var(--amber)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Controle de Margem
+      </div>
+      <ul class="item-list">
+        <li><span class="dot amber"></span>Pontuação ajustada pela margem de cada jogo.</li>
+        <li><span class="dot amber"></span>Peso menor para categorias como Crash / Aviator.</li>
+        <li><span class="dot amber"></span>Incentivos com rollover saudável e sustentável.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Progressão de Nível -->
+  <div class="section-header anim d2" style="margin-top:28px;">
+    <div class="section-icon blue">
+      <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    </div>
+    <div>
+      <div class="section-label">Mecânica</div>
+      <h2>Critérios de Progressão de Nível</h2>
+    </div>
+  </div>
+
+  <div class="grid-4 anim d3">
+    <div class="stat-card">
+      <div class="stat-icon"><svg viewBox="0 0 24 24" stroke="var(--blue)"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+      <div class="stat-label">Critério 1</div>
+      <div class="stat-value" style="color:var(--blue);">NGR</div>
+      <div class="stat-desc">Acumulado</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><svg viewBox="0 0 24 24" stroke="var(--green)"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="stat-label">Critério 2</div>
+      <div class="stat-value" style="color:var(--green);">Frequência</div>
+      <div class="stat-desc">Ativa</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><svg viewBox="0 0 24 24" stroke="var(--amber)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="stat-label">Critério 3</div>
+      <div class="stat-value" style="color:var(--amber);">Consistência</div>
+      <div class="stat-desc">De jogo</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><svg viewBox="0 0 24 24" stroke="var(--red)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="stat-label">Critério 4</div>
+      <div class="stat-value" style="color:var(--red);">Limite</div>
+      <div class="stat-desc">Progressão / período</div>
+    </div>
+  </div>
+
+  <!-- Player Profiles -->
+  <div class="section-header anim d4" style="margin-top:36px;">
+    <div class="section-icon amber">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <div>
+      <div class="section-label">Exemplos Práticos</div>
+      <h2>Perfis de Jogador</h2>
+    </div>
+  </div>
+
+  <div class="grid-2 anim d5">
+    <!-- Aviator Heavy -->
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar" style="background:var(--red-dim);">
+          <svg viewBox="0 0 24 24" stroke="var(--red)"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div>
+          <div class="profile-name">Jogador Heavy — Aviator</div>
+          <div class="profile-subtitle"><span class="tag red">High Value</span>&nbsp; <span class="tag amber">Crash</span></div>
+        </div>
+      </div>
+      <div class="profile-body">
+        <div class="label">Progressão</div>
+        <ul class="item-list">
+          <li><span class="dot green"></span>Evolui por consistência e <span class="tag blue">NGR</span> ajustado à margem.</li>
+        </ul>
+        <div class="label">Recompensas</div>
+        <ul class="item-list">
+          <li><span class="dot orange"></span>Cashback personalizado.</li>
+          <li><span class="dot orange"></span>Boosts temporários de multiplicador.</li>
+          <li><span class="dot orange"></span>Limite maior de saque.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Slots Medium -->
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar" style="background:var(--purple-dim);">
+          <svg viewBox="0 0 24 24" stroke="var(--purple)"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 8v8"/><path d="M12 8v8"/><path d="M17 8v8"/></svg>
+        </div>
+        <div>
+          <div class="profile-name">Jogador Médio — Slots</div>
+          <div class="profile-subtitle"><span class="tag purple">Mid Value</span>&nbsp; <span class="tag blue">Slots</span></div>
+        </div>
+      </div>
+      <div class="profile-body">
+        <div class="label">Progressão</div>
+        <ul class="item-list">
+          <li><span class="dot green"></span>Progride mais rápido via <span class="tag blue">NGR</span> — margem mais favorável.</li>
+        </ul>
+        <div class="label">Recompensas</div>
+        <ul class="item-list">
+          <li><span class="dot orange"></span>Free spins direcionados.</li>
+          <li><span class="dot orange"></span>Missões de jogo com metas progressivas.</li>
+          <li><span class="dot orange"></span>Bônus progressivos por tier.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- GLOSSÁRIO                                           -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="section-header anim">
+    <div class="section-icon orange">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+    </div>
+    <div>
+      <div class="section-label">Referência</div>
+      <h2>Glossário</h2>
+    </div>
+  </div>
+
+  <div class="glossary-grid anim d1">
+    <div class="glossary-item">
+      <div class="glossary-term" style="color:var(--orange);">GGR</div>
+      <div class="glossary-def">Valor apostado menos prêmios pagos.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term" style="color:var(--blue);">NGR</div>
+      <div class="glossary-def">GGR menos bônus, free spins, cashback e taxas.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term" style="color:var(--red);">D7</div>
+      <div class="glossary-def">Jogadores que retornam até 7 dias.</div>
+    </div>
+    <div class="glossary-item">
+      <div class="glossary-term" style="color:var(--amber);">D14</div>
+      <div class="glossary-def">Jogadores que retornam até 14 dias.</div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- FOOTER                                              -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <footer class="anim d2">
+    <div class="footer-line">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Documento Confidencial — B1 BET · CRM Assessment
+    </div>
+    <div class="footer-line">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Breno Souto de França
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
